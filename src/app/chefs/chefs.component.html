@@ -1,0 +1,38 @@
+<section class="container py-5">
+  <div class="mb-4">
+    <h1 class="h2 mb-1">Bérelhető szakácsok</h1>
+    <p class="text-secondary mb-0">Találd meg az alkalomhoz illő szakácsot.</p>
+  </div>
+
+  @if (loading()) {
+    <p class="text-secondary" role="status">Szakácsok betöltése…</p>
+  } @else if (error()) {
+    <div class="alert alert-danger" role="alert">{{ error() }}</div>
+  } @else {
+    <div class="row g-4">
+      @for (chef of chefs(); track chef.id) {
+        <div class="col-12 col-md-6 col-lg-4">
+          <article class="card h-100 shadow-sm">
+            <img class="card-img-top chef-image" [src]="chef.image" [alt]="chef.name" />
+            <div class="card-body d-flex flex-column">
+              <h2 class="card-title h5">{{ chef.name }}</h2>
+              <span class="badge text-bg-success align-self-start mb-3">{{ chef.cuisine }}</span>
+              <p class="card-text text-secondary">{{ chef.description }}</p>
+              <dl class="row small mb-3">
+                <dt class="col-7">Alapdíj</dt>
+                <dd class="col-5 text-end">{{ chef.base_fee | number }} Ft</dd>
+                <dt class="col-7">Napidíj</dt>
+                <dd class="col-5 text-end">{{ chef.daily_rate | number }} Ft</dd>
+              </dl>
+              <button class="btn btn-success mt-auto" type="button" (click)="berel(chef)">
+                + Bérel
+              </button>
+            </div>
+          </article>
+        </div>
+      } @empty {
+        <div class="col-12"><p class="text-secondary">Jelenleg nincs elérhető szakács.</p></div>
+      }
+    </div>
+  }
+</section>
